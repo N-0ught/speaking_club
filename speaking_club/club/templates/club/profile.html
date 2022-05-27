@@ -1,0 +1,91 @@
+{% extends 'club/header.html' %}
+{% load static %}
+{% block navbar %}
+<li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="{% url 'club:index' %}">Homepage</a></li>
+{% if user.is_authenticated %}
+<li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="{% url 'club:profile' %}">{{ user.username }}</a></li>
+<li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="{% url 'club:logout' %}">Logout</a></li>
+{% endif %}
+{% endblock %}
+{% block content %}
+<header class="masthead bg-primary text-white text-center" style="background: #34495e">
+    <div class="container d-flex align-items-center flex-column">
+<h1>My profile</h1> <br>
+        <table class="table" style="width:500px;">
+  <tbody>
+    <tr class="table-success">
+      <th scope="row">Username</th>
+      <td>{{ profilemodel.user }}</td>
+    </tr>
+    {% if not profilemodel.full_name %}
+    <tr class="table-danger">
+      <th scope="row">Full name</th>
+      <td>
+          Not given
+          {% else %}
+    <tr class="table-success">
+      <th scope="row">Full name</th>
+      <td>
+          {{profilemodel.full_name}}
+          {% endif %}
+      </td>
+    </tr>
+
+    {% if not profilemodel.telegram %}
+    <tr class="table-danger">
+      <th scope="row">Nickname on Telegram</th>
+      <td>
+          Not given
+          {% else %}
+    <tr class="table-success">
+      <th scope="row">Nickname on Telegram</th>
+      <td>
+          {{profilemodel.telegram}}
+          {% endif %}
+      </td>
+    </tr>
+  {% if not profilemodel.language %}
+    <tr class="table-danger">
+      <th scope="row">Target language</th>
+      <td>
+          Not given
+          {% else %}
+    <tr class="table-success">
+      <th scope="row">Target language</th>
+      <td>
+          {{profilemodel.language}}
+          {% endif %}
+      </td>
+    </tr>
+  {% if not profilemodel.language_level %}
+    <tr class="table-danger">
+      <th scope="row">Level of the target language</th>
+      <td>
+          Not given
+          {% else %}
+    <tr class="table-success">
+      <th scope="row">Level of the target language</th>
+      <td>
+          {{profilemodel.language_level}}
+          {% endif %}
+      </td>
+    </tr>
+  {% if not profilemodel.age %}
+    <tr class="table-danger">
+      <th scope="row">Age</th>
+      <td>
+          Not given
+          {% else %}
+    <tr class="table-success">
+      <th scope="row">Age</th>
+      <td>
+          {{profilemodel.age}}
+          {% endif %}
+      </td>
+    </tr>
+  </tbody>
+</table>
+        <a href="{% url 'club:edit' %}" type="button" class="edit_button" style="text-decoration: none">Edit</a>
+    </div>
+</header>
+{% endblock %}
