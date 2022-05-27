@@ -1,1 +1,1 @@
-web: gunicorn speaking_club.wsgi --log-file -
+web: gunicorn speaking_club/speaking_club.wsgi --log-file -
