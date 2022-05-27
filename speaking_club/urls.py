@@ -20,7 +20,7 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('/', include('club.urls')),
+    path('', include('club.urls')),
     path('reset/done/',
          auth_views.PasswordResetCompleteView.as_view(template_name='club/password/password_reset_complete.html'),
          name='password_reset_complete'),
