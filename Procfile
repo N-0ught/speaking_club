@@ -1,0 +1,1 @@
+web: gunicorn speaking_club.wsgi --log-file -
