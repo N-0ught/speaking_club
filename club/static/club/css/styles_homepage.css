@@ -128,6 +128,12 @@ body {
     }
 }
 
+@media (min-width: 750px) {
+    .prof_table {
+    width: 516px;
+    }
+}
+
 .box{
   padding: 40px;
 
