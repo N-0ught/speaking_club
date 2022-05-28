@@ -122,28 +122,13 @@ body {
     pointer-events: none;
 }
 
-@media (min-width: 375px) {
+@media (min-width: 500px) {
     .box {
-        width: 375px;
+        width: 430px;
     }
 }
-
-@media (min-width: 405px) {
-    .box {
-        width: 400px;
-    }
-}
-
-@media (min-width: 1200px) {
-    .box {
-        width: 450px;
-    }
-}
-
 
 .box{
-  width: 350px;
-
   padding: 40px;
 
   background: #191919;
