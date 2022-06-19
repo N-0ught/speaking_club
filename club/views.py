@@ -7,8 +7,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
-from .forms import Registration, LoginForm, EditForm, ResetPassword, ContactUs
-from .models import ProfileModel
+from .forms import Registration, LoginForm, EditForm, ResetPassword, ContactUs, CommentForm
+from .models import ProfileModel, CommentsModel
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
@@ -20,23 +20,37 @@ from django.http import Http404, HttpResponse
 # Create your views here.
 def homepage(request):
     if request.method == 'POST':
-        form = ContactUs(request.POST)
-        if form.is_valid():
-            subject = 'GoSpeakClub Contact Us'
-            body = {
-                'full_name': form.cleaned_data['full_name'],
-                'email': form.cleaned_data['email'],
-                'message': form.cleaned_data['message']
-            }
-            message = '\n'.join(body.values())
-            try:
-                send_mail(subject, message, 'admin@example.com', ['admin@example.com'], fail_silently=False)
-            except BadHeaderError:
-                return HttpResponse('Invalid header found.')
-            messages.info(request, 'Your message was successfully sent! We will reply soon.')
-            return redirect('club:index')
-    form = ContactUs()
-    return render(request, 'club/index.html', {'form': form})
+        if 'message' in request.POST:
+            form = ContactUs(request.POST)
+            if form.is_valid():
+                subject = 'GoSpeakClub Contact Us'
+                body = {
+                    'full_name': form.cleaned_data['full_name'],
+                    'email': form.cleaned_data['email'],
+                    'message': form.cleaned_data['message']
+                }
+                message = '\n'.join(body.values())
+                try:
+                    send_mail(subject, message, 'admin@example.com', ['admin@example.com'], fail_silently=False)
+                except BadHeaderError:
+                    return HttpResponse('Invalid header found.')
+                messages.info(request, 'Your message was successfully sent! We will reply soon.')
+                return redirect('club:index')
+        if 'comment' in request.POST:
+            form = CommentForm(request.POST)
+            if form.is_valid():
+                new_comment = form.save(commit=False)
+                new_comment.user = request.user
+                new_comment.save()
+                messages.success(request, 'Your comment is ready for publishing and awaits moderation to approve it.')
+    contact_form = ContactUs()
+    comment_form = CommentForm()
+    comments = CommentsModel.objects.filter(approved=True)[:5]
+    return render(request, 'club/index.html', {
+        'contact_form': contact_form,
+        'comment_form': comment_form,
+        'comments': comments,
+    })
 
 
 def register(request):

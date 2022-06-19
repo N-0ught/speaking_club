@@ -95,6 +95,15 @@ body {
     text-align: center;
 }
 
+.scrollable-comms {
+    height: 450px;
+    overflow-y: auto;
+    border: 4px solid white;
+    border-radius: 24px;
+    padding: 20px;
+
+}
+
 .custom-select select {
     display: inline-block;
     padding: 4px 3px 3px 5px;

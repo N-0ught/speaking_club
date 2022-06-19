@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordResetForm, SetPasswordForm
 from django.contrib.auth.models import User
-from .models import ProfileModel
+from .models import ProfileModel, CommentsModel
 
 
 class Registration(UserCreationForm):
@@ -65,3 +65,12 @@ class ContactUs(forms.Form):
     full_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Full name'}), max_length=100)
     email = forms.EmailField(widget=forms.EmailInput(attrs={'placeholder': 'Email'}), max_length=100)
     message = forms.CharField(widget=forms.Textarea(attrs={"placeholder": "Your message"}), max_length=1000)
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = CommentsModel
+        fields = ('comment',)
+        widgets = {
+            'comment': forms.Textarea(attrs={'placeholder': 'Your comment goes here...'})
+        }

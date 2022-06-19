@@ -36,3 +36,16 @@ class ProfileModel(models.Model):
 
     def __str__(self):
         return self.user.username
+
+
+class CommentsModel(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    comment = models.TextField('Your comment', max_length=5000)
+    create_date = models.DateTimeField(auto_now_add=True)
+    approved = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ['-create_date']
+
+    def __str__(self):
+        return self.comment
