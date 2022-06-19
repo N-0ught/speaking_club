@@ -211,7 +211,7 @@
                     {% for comm in comments %}
                     <h4 style="color:black">{{comm.user}} ({{comm.user.profilemodel.full_name}})</h4>
                     <small style="color:grey">Created on: {{comm.create_date}}</small><br>
-                    <p class="lead">{{comm.comment}}</p><hr><br>
+                    <p class="lead" style="text-align:justify">{{comm.comment}}</p><hr><br>
                     {% endfor %}
                 </div>
                 {% if user.is_authenticated %}
