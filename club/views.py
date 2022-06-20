@@ -163,6 +163,8 @@ def password_reset_request(request):
                         return HttpResponse('Invalid header found.')
                 messages.success(request, 'A message with reset password instructions has been sent to your email.')
                 return redirect("club:index")
+            else:
+                messages.error(request, 'There are no accounts signed up with this email.')
     password_reset_form = ResetPassword()
     return render(request=request, template_name="club/password/password_reset.html",
                   context={"form": password_reset_form})
