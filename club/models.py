@@ -49,3 +49,14 @@ class CommentsModel(models.Model):
 
     def __str__(self):
         return self.comment
+
+
+class ContactMessagesModel(models.Model):
+    full_name = models.CharField('Full name', max_length=100)
+    email = models.EmailField('Email', max_length=150)
+    message = models.TextField('Your message', max_length=1500)
+    create_date = models.DateTimeField(auto_now_add=True)
+    replied = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.message

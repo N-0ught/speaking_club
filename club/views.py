@@ -1,3 +1,5 @@
+import ssl
+from decouple import config
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.tokens import default_token_generator
@@ -15,6 +17,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.views.generic import DetailView
 from django.http import Http404, HttpResponse
+import smtplib
+
+my_email = "ainurminu@mail.ru"
+password = config('MAIL_PASSWORD')
 
 
 # Create your views here.
@@ -23,6 +29,7 @@ def homepage(request):
         if 'message' in request.POST:
             form = ContactUs(request.POST)
             if form.is_valid():
+                form.save()
                 subject = 'GoSpeakClub Contact Us'
                 body = {
                     'full_name': form.cleaned_data['full_name'],
@@ -30,11 +37,17 @@ def homepage(request):
                     'message': form.cleaned_data['message']
                 }
                 message = '\n'.join(body.values())
-                try:
-                    send_mail(subject, message, 'admin@example.com', ['admin@example.com'], fail_silently=False)
-                except BadHeaderError:
-                    return HttpResponse('Invalid header found.')
-                messages.info(request, 'Your message was successfully sent! We will reply soon.')
+                context = ssl.create_default_context()
+                with smtplib.SMTP_SSL('smtp.mail.ru', 465, context=context) as connection:
+                    try:
+                        connection.login(my_email, password)
+                        connection.sendmail(my_email, "specialforpy@gmail.com",
+                                            f"Subject:{subject}\n\n{message}")
+                    except BadHeaderError:
+                        return HttpResponse('Invalid header found.')
+                # try:
+                #     send_mail(subject, message, 'admin@example.com', ['admin@example.com'], fail_silently=False)
+                messages.success(request, 'Your message was successfully sent! We will reply soon.')
                 return redirect('club:index')
         if 'comment' in request.POST:
             form = CommentForm(request.POST)
@@ -131,7 +144,7 @@ def password_reset_request(request):
                     c = {
                         "email": user.email,
                         'username': user.username,
-                        'domain': '127.0.0.1:8000',
+                        'domain': 'https://gospeakclub.herokuapp.com/',
                         'site_name': 'speaking_club',
                         "uid": urlsafe_base64_encode(force_bytes(user.pk)),
                         "user": user,
@@ -140,10 +153,15 @@ def password_reset_request(request):
                     }
                     email = render_to_string(email_template_name, c)
                     try:
-                        send_mail(subject, email, 'admin@example.com', [user.email], fail_silently=False)
+                        context = ssl.create_default_context()
+                        with smtplib.SMTP_SSL('smtp.mail.ru', 465, context=context) as connection:
+                            connection.login(my_email, password)
+                            connection.sendmail(my_email, [user.email],
+                                                f"Subject:{subject}\n\n{email}")
+                        # send_mail(subject, email, 'specialforpy@gmail.com', [user.email], fail_silently=False)
                     except BadHeaderError:
                         return HttpResponse('Invalid header found.')
-                    messages.success(request, 'A message with reset password instructions has been sent to your email.')
+                messages.success(request, 'A message with reset password instructions has been sent to your email.')
                 return redirect("club:index")
     password_reset_form = ResetPassword()
     return render(request=request, template_name="club/password/password_reset.html",

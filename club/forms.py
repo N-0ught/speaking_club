@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordResetForm, SetPasswordForm
 from django.contrib.auth.models import User
-from .models import ProfileModel, CommentsModel
+from .models import ProfileModel, CommentsModel, ContactMessagesModel
 
 
 class Registration(UserCreationForm):
@@ -40,9 +40,6 @@ class EditForm(forms.ModelForm):
         widgets = {
             'full_name': forms.TextInput(attrs={'placeholder': 'Full name'}),
             'telegram': forms.TextInput(attrs={'placeholder': 'Telegram'}),
-            # 'language': forms.Select(attrs={'margin-left:20px'}),
-            # 'language_level': forms.Select(attrs={'margin-left:20px'}),
-            # 'age': forms.Select(attrs={'margin-left:20px'})
         }
 
 
@@ -61,10 +58,15 @@ class ConfirmResetPassword(SetPasswordForm):
         self.fields['new_password2'].widget = forms.PasswordInput(attrs={'placeholder': 'Password confirmation'})
 
 
-class ContactUs(forms.Form):
-    full_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Full name'}), max_length=100)
-    email = forms.EmailField(widget=forms.EmailInput(attrs={'placeholder': 'Email'}), max_length=100)
-    message = forms.CharField(widget=forms.Textarea(attrs={"placeholder": "Your message"}), max_length=1000)
+class ContactUs(forms.ModelForm):
+    class Meta:
+        model = ContactMessagesModel
+        fields = ('full_name', 'email', 'message')
+        widgets = {
+            'full_name': forms.TextInput(attrs={'placeholder': 'Full name'}),
+            'email': forms.EmailInput(attrs={'placeholder': 'Email'}),
+            'message': forms.Textarea(attrs={'placeholder': 'Your message'}),
+        }
 
 
 class CommentForm(forms.ModelForm):
