@@ -231,9 +231,15 @@ body {
 
 }
 
+@media (min-width: 750px) {
+    .getstarted-btn {
+        width: 320px;
+    }
+}
+
 .getstarted-btn {
 
-  background: #F32424;
+  background: #242F9B;
 
   display: block;
 
@@ -255,15 +261,15 @@ body {
 
   text-decoration: none;
 
-  width: 200px;
+  width: 250px;
 
   font-size: 28;
 
   font-weight: bold
-}
+    }
 
 .getstarted-btn:hover {
-  background: #FF5F00;
+  background: #001D6E;
   color: white;
 }
 
