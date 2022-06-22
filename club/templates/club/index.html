@@ -27,6 +27,7 @@
                 <!-- Masthead Subheading-->
                 <p class="masthead-subheading font-weight-light mb-0">Practice your English, German, and Russian with our online Speaking Club</p>
             </div>
+            <a href="{% url 'club:register' %}" type="button" class="getstarted-btn">Get started!</a>
         </header>
         <!-- Portfolio Section-->
         <section class="page-section portfolio" id="portfolio" style="background: #34495e">
@@ -44,45 +45,45 @@
                     <!-- Portfolio Item 1-->
                     <div class="col-md-6 col-lg-4 mb-5">
                         <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal1">
-                            <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
-                                <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
-                            </div>
+<!--                            <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">-->
+<!--                                <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>-->
+<!--                            </div>-->
                             <img class="img-fluid" src="{% static 'club/images/group.jpg' %}" alt="..." />
                         </div>
                     </div>
                     <!-- Portfolio Item 2-->
                     <div class="col-md-6 col-lg-4 mb-5">
                         <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal2">
-                            <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
-                                <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
-                            </div>
+<!--                            <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">-->
+<!--                                <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>-->
+<!--                            </div>-->
                             <img class="img-fluid" src="{% static 'club/images/teacher-min.jpg' %}" alt="..." />
                         </div>
                     </div>
                     <!-- Portfolio Item 3-->
                     <div class="col-md-6 col-lg-4 mb-5">
                         <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal3">
-                            <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
-                                <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
-                            </div>
+<!--                            <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">-->
+<!--                                <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>-->
+<!--                            </div>-->
                             <img class="img-fluid" src="{% static 'club/images/computer.jpg' %}" alt="..." />
                         </div>
                     </div>
                     <!-- Portfolio Item 4-->
                     <div class="col-md-6 col-lg-4 mb-5 mb-lg-0">
                         <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal4">
-                            <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
-                                <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
-                            </div>
+<!--                            <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">-->
+<!--                                <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>-->
+<!--                            </div>-->
                             <img class="img-fluid" src="{% static 'club/images/technic.jpg' %}" alt="..." />
                         </div>
                     </div>
                     <!-- Portfolio Item 5-->
                     <div class="col-md-6 col-lg-4 mb-5 mb-md-0">
                         <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal5">
-                            <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
-                                <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
-                            </div>
+<!--                            <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">-->
+<!--                                <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>-->
+<!--                            </div>-->
                             <img class="img-fluid" src="{% static 'club/images/career.jpg' %}" alt="..." />
                         </div>
                     </div>
@@ -116,7 +117,7 @@
                 </div>
                 <div class="row">
                     <div class="col-lg ms-auto text-center">
-                    <p class="lead">Interested? <a href="{% url 'club:register' %}" style="color:#34495e; text-decoration: none">Sign up</a> and get your first lesson for free!</p>
+                    <p class="lead">Interested? <a href="{% url 'club:register' %}" class="signup-btn">Sign up</a> and get your first lesson for free!</p>
                     </div>
                 </div>
                 <!-- About Section Button-->
@@ -216,10 +217,10 @@
                 </div>
                 {% if user.is_authenticated %}
                 <div class="container d-flex align-items-center flex-column">
-                    <form class="box" method="post">
+                    <form class="box" method="post" style="margin-top:20px">
                         {% csrf_token %}
                         {{ comment_form.comment }}
-                        <input type="submit" value="Leave a comment">
+                        <input type="submit" value="Comment">
                     </form>
                 </div>
                    {% endif %}
