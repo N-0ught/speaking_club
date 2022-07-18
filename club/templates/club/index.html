@@ -27,7 +27,7 @@
                 <!-- Masthead Subheading-->
                 <p class="masthead-subheading font-weight-light mb-0">Practice your English, German, and Russian with our online Speaking Club</p>
             </div>
-            <a href="{% url 'club:register' %}" type="button" class="getstarted-btn">Get started!</a>
+            <a href="{% if user.is_authenticated %}{% url 'club:profile' %}{% else %}{% url 'club:register' %}{% endif %}" type="button" class="getstarted-btn">Get started!</a>
         </header>
         <!-- Portfolio Section-->
         <section class="page-section portfolio" id="portfolio" style="background: #34495e">
