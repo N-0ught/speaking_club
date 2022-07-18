@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models import Sum
 from django.template.defaultfilters import slugify
 
 
@@ -29,6 +30,8 @@ class ProfileModel(models.Model):
     language_level = models.CharField('Level of your target language', max_length=2, choices=LANG_LEVELS)
     age = models.CharField('Your age', max_length=5, choices=AGE)
     slug = models.SlugField(unique=True)
+    total_score = models.FloatField(default=0)
+    access = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.user.username)
@@ -60,3 +63,53 @@ class ContactMessagesModel(models.Model):
 
     def __str__(self):
         return self.message
+
+
+def user_directory_path(instance, filename):
+    # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
+    return '{0}/Day_{1}/{2}'.format(instance.homework.user.username, instance.homework.day, filename)
+
+
+class HomeworkSubmitModel(models.Model):
+    STATUS = (
+        ('ND', 'Not done'),
+        ('S', 'Submitted'),
+        ('A', 'Accepted'),
+        ('D', 'Denied')
+    )
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    day = models.CharField('Course day', max_length=2)
+    questions = models.TextField('Ask our teachers anything', max_length=2000, blank=True)
+    score = models.FloatField(default=0)
+    status = models.CharField('Day status', max_length=2, choices=STATUS, default='ND')
+
+    def __str__(self):
+        return f'{self.user}, {self.day}'
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        total_score = HomeworkSubmitModel.objects.filter(user=self.user).aggregate(Sum('score'))
+        self.user.profilemodel.total_score = total_score['score__sum']
+        self.user.profilemodel.save()
+
+    def status_type_submit(user):
+        data = HomeworkSubmitModel.objects.filter(user=user, status='S')
+        return {int(day.day): day.status for day in data}
+
+    def status_type_accepted(user):
+        data = HomeworkSubmitModel.objects.filter(user=user, status='A')
+        return {int(day.day): day.status for day in data}
+
+    def status_type_denied(user):
+        data = HomeworkSubmitModel.objects.filter(user=user, status='D')
+        return {int(day.day): day.status for day in data}
+
+    def days_completed(user):
+        data = HomeworkSubmitModel.objects.filter(user=user, status='A')
+        return len(data)
+
+
+class HomeworkFilesModel(models.Model):
+    homework = models.ForeignKey(HomeworkSubmitModel, on_delete=models.CASCADE)
+    file = models.FileField(upload_to=user_directory_path, blank=True)

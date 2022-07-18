@@ -17,4 +17,6 @@ urlpatterns = [
     path('reset/<uidb64>/<token>/',
          auth_views.PasswordResetConfirmView.as_view(template_name='club/password/password_reset_confirm.html', form_class=forms.ConfirmResetPassword),
          name='password_reset_confirm'),
+    path('course/', views.course_page, name='course'),
+    path('course/day<int:day>/', views.course_day, name='course_day'),
 ]

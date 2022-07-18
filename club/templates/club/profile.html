@@ -3,7 +3,8 @@
 {% block navbar %}
 <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="{% url 'club:index' %}">Homepage</a></li>
 {% if user.is_authenticated %}
-<li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="{% url 'club:profile' %}">{{ user.username }}</a></li>
+<li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="{% url 'club:profile' %}" style="font-weight:900">{{ user.username }}</a></li>
+<li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="{% url 'club:course' %}" style="font-weight:900">Course</a></li>
 <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="{% url 'club:logout' %}">Logout</a></li>
 {% endif %}
 {% endblock %}
@@ -11,7 +12,7 @@
 <header class="masthead bg-primary text-white text-center" style="background: #34495e">
     <div class="container d-flex align-items-center flex-column">
 <h1>My profile</h1> <br>
-        <table class="table prof_table">
+        <table class="table prof_table" style="overflow:hidden;border-radius:12px;">
   <tbody>
     <tr class="table-success">
       <th scope="row">Username</th>
@@ -86,6 +87,7 @@
   </tbody>
 </table>
         <a href="{% url 'club:edit' %}" type="button" class="edit_button" style="text-decoration: none">Edit</a>
+        <h4><a href="{% url 'club:course' %}" style="text-decoration: none">Go to course!</a></h4>
     </div>
 </header>
 {% endblock %}

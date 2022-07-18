@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordResetForm, SetPasswordForm
 from django.contrib.auth.models import User
-from .models import ProfileModel, CommentsModel, ContactMessagesModel
+from .models import ProfileModel, CommentsModel, ContactMessagesModel, HomeworkSubmitModel,HomeworkFilesModel
 
 
 class Registration(UserCreationForm):
@@ -36,7 +36,7 @@ class LoginForm(AuthenticationForm):
 class EditForm(forms.ModelForm):
     class Meta:
         model = ProfileModel
-        exclude = ['slug', 'user']
+        fields = ('full_name', 'telegram', 'language', 'language_level', 'age')
         widgets = {
             'full_name': forms.TextInput(attrs={'placeholder': 'Full name'}),
             'telegram': forms.TextInput(attrs={'placeholder': 'Telegram'}),
@@ -75,4 +75,27 @@ class CommentForm(forms.ModelForm):
         fields = ('comment',)
         widgets = {
             'comment': forms.Textarea(attrs={'placeholder': 'Your comment goes here...'})
+        }
+
+
+class AccessForm(forms.Form):
+    code = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Access code'}))
+
+
+class HomeworkSubmitForm(forms.ModelForm):
+    class Meta:
+        model = HomeworkSubmitModel
+        fields = ('questions',)
+        widgets = {
+            'questions': forms.Textarea(attrs={'placeholder': 'Ask our teachers anything'}),
+
+        }
+
+
+class HomeworkFilesForm(forms.ModelForm):
+    class Meta:
+        model = HomeworkFilesModel
+        fields = ('file',)
+        widgets = {
+            'file': forms.ClearableFileInput(attrs={'multiple': True}),
         }

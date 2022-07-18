@@ -9,8 +9,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
-from .forms import Registration, LoginForm, EditForm, ResetPassword, ContactUs, CommentForm
-from .models import ProfileModel, CommentsModel
+from .forms import Registration, LoginForm, EditForm, ResetPassword, ContactUs, CommentForm, AccessForm, HomeworkSubmitForm, HomeworkFilesForm
+from .models import ProfileModel, CommentsModel, HomeworkSubmitModel, HomeworkFilesModel
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
@@ -21,6 +21,7 @@ import smtplib
 
 my_email = "ainurminu@mail.ru"
 password = config('MAIL_PASSWORD')
+access_code = 'GL14'
 
 
 # Create your views here.
@@ -168,3 +169,48 @@ def password_reset_request(request):
     password_reset_form = ResetPassword()
     return render(request=request, template_name="club/password/password_reset.html",
                   context={"form": password_reset_form})
+
+
+@login_required
+def course_page(request):
+    if request.method == 'POST':
+        form = AccessForm(request.POST)
+        if form.is_valid():
+            code = form.cleaned_data['code']
+            if code == access_code:
+                request.user.profilemodel.access = True
+                request.user.profilemodel.save()
+            else:
+                messages.error(request, 'Invalid code. Please, try again.')
+    access = request.user.profilemodel.access
+    if not access:
+        form = AccessForm()
+        return render(request, 'club/access.html', {'form': form})
+    status_s = HomeworkSubmitModel.status_type_submit(request.user)
+    status_a = HomeworkSubmitModel.status_type_accepted(request.user)
+    status_d = HomeworkSubmitModel.status_type_denied(request.user)
+    total_score = ProfileModel.objects.get(user=request.user).total_score
+    days_completed = HomeworkSubmitModel.days_completed(request.user)
+    return render(request, 'club/course_hp.html', {'status_s': status_s, 'status_a': status_a, 'status_d': status_d, 'score': total_score, 'days_completed': days_completed})
+
+
+@login_required
+def course_day(request, day):
+    if request.method == 'POST':
+        submit_form = HomeworkSubmitForm(request.POST)
+        files_form = HomeworkFilesForm(request.POST, request.FILES)
+        files = request.FILES.getlist('file')
+        if submit_form.is_valid() and files_form.is_valid():
+            new_homework = submit_form.save(commit=False)
+            new_homework.user = request.user
+            new_homework.day = day
+            new_homework.status = 'S'
+            new_homework.save()
+            for file in files:
+                f = HomeworkFilesModel(homework=new_homework, file=file)
+                f.save()
+            messages.success(request, 'Your homework has been successfully submitted!')
+        return redirect(f'club:course_day', day=day)
+    submit_form = HomeworkSubmitForm()
+    files_form = HomeworkFilesForm()
+    return render(request, f'club/course_days/day{day}.html', {'submit_form': submit_form, 'files_form': files_form})

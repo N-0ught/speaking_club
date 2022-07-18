@@ -1,13 +1,13 @@
 from django.contrib import admin
-from .models import ProfileModel, CommentsModel, ContactMessagesModel
+from .models import ProfileModel, CommentsModel, ContactMessagesModel, HomeworkSubmitModel, HomeworkFilesModel
 
 
 # Register your models here.
 
 @admin.register(ProfileModel)
 class ProfileModelAdmin(admin.ModelAdmin):
-    list_display = ('user', 'full_name', 'language', 'language_level', 'age')
-    list_filter = ['language', 'language_level', 'age']
+    list_display = ('user', 'full_name', 'language', 'language_level', 'age', 'total_score', 'access')
+    list_filter = ['language', 'language_level', 'age', 'access']
 
 
 @admin.register(CommentsModel)
@@ -29,3 +29,14 @@ class ContactMessagesModelAdmin(admin.ModelAdmin):
 
     def reply_to_message(self, request, queryset):
         queryset.update(replied=True)
+
+
+class HomeworkFilesModelAdmin(admin.TabularInline):
+    model = HomeworkFilesModel
+    extra = 0
+
+@admin.register(HomeworkSubmitModel)
+class HomeworkSubmitModelAdmin(admin.ModelAdmin):
+    list_display = ('user', 'day', 'questions', 'status', 'score')
+    list_filter = ('user', 'day', 'status')
+    inlines = [HomeworkFilesModelAdmin]

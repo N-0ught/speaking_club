@@ -1,0 +1,39 @@
+{% extends 'club/header.html' %}
+{% load static %}
+{% block navbar %}
+<li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="{% url 'club:index' %}">Homepage</a></li>
+{% if user.is_authenticated %}
+<li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="{% url 'club:profile' %}" style="font-weight:900">{{ user.username }}</a></li>
+<li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="{% url 'club:logout' %}">Logout</a></li>
+{% endif %}
+{% endblock %}
+{% block content %}
+{% if messages %}
+  <div id="flash-message" class="alert alert-info flash-success alert-dismissible" role="alert">
+    {% for message in messages %}
+        {{ message | safe}}
+      <a href="{% url 'club:index' %}" class="close" data-dismiss="alert" aria-label="close" style="text-decoration: none">&times;</a>
+    {% endfor %}
+  </div>
+{% endif %}
+<header class="masthead bg-primary text-white text-center" style="background: #9BA3EB">
+    <div class="container d-flex align-items-center flex-column">
+        <h1>Your course</h1>
+        <h5>Total score: {{score}} / 200<br>Days completed: {{days_completed}} / 60</h5>
+        <ul class="course-list col-10 col-md-8">
+            {% with ''|center:7 as range %}
+            {% for n in range %}
+                <li>
+                    <a href="{% url 'club:course_day' forloop.counter %}">
+                        <div class="course-list-element" style='{% if forloop.counter in status_s %}background:#ffeeb5{% elif forloop.counter in status_a %}background:#cafac3{% elif forloop.counter in status_d %}background:#fcd7d7 {% endif %}'>
+                            <h4 style="margin:0">Day {{ forloop.counter }}. Topic {{ forloop.counter }}</h4>
+                        </div>
+
+                    </a>
+                </li>
+            {% endfor %}
+            {% endwith %}
+        </ul>
+    </div>
+</header>
+{% endblock %}

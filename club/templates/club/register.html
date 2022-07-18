@@ -19,7 +19,6 @@
     </div>
     <h1>Register</h1>
         {% csrf_token %}
-<!--        {{ form.as_p }}-->
         {{ form.username}}
         <small style="color:white;text-align:left">{{ form.username.help_text }}</small>
         {{ form.email}}

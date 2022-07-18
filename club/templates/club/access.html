@@ -1,0 +1,29 @@
+{% extends 'club/header.html' %}
+{% load static %}
+{% block navbar %}
+<li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="{% url 'club:index' %}">Homepage</a></li>
+{% if user.is_authenticated %}
+<li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="{% url 'club:profile' %}" style="font-weight:900">{{ user.username }}</a></li>
+<li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="{% url 'club:logout' %}">Logout</a></li>
+{% endif %}
+{% endblock %}
+{% block content %}
+<header class="masthead bg-primary text-white text-center" style="background: #34495e">
+    <div class="container d-flex align-items-center flex-column">
+<form class="box" method="post">
+  {% if messages %}
+  <div class="alert alert-danger" role="alert">
+        {% for message in messages %}
+           {{ message }}
+        {% endfor %}
+  </div>
+  {% endif %}
+  <h1>Access</h1><br>
+  {% csrf_token %}
+    <p>You don't have access to our course materials yet. Enter the code to gain access.</p>
+  {{ form.code }}
+  <input type="submit" name="" value="Submit">
+</form>
+    </div>
+</header>
+{% endblock %}
