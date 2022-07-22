@@ -35,8 +35,8 @@ ALLOWED_HOSTS = ['gospeakclub.herokuapp.com/', '127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
-    'club',
     'channels',
+    'club',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -81,7 +81,7 @@ CHANNEL_LAYERS = {
         # "BACKEND": "channels.layers.InMemoryChannelLayer",
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [(os.environ.get('REDIS_URL'), 6379)],
+            "hosts": [(os.environ.get('REDIS_URL'))],
             # "hosts": [os.environ.get('REDIS_URL', 6379)],
             # "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
         },
