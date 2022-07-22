@@ -73,7 +73,7 @@ TEMPLATES = [
         },
     },
 ]
-
+redis_host = os.environ.get('REDIS_HOST', 'localhost')
 WSGI_APPLICATION = 'speaking_club.wsgi.application'
 ASGI_APPLICATION = 'speaking_club.asgi.application'
 CHANNEL_LAYERS = {
@@ -82,9 +82,8 @@ CHANNEL_LAYERS = {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
             # "hosts": [(os.environ.get('REDIS_URL'), os.environ.get('REDIS_PORT'))],
-            # "hosts": [os.environ.get('REDIS_URL')]
+            "hosts": [(redis_host, 6379)],
             # "hosts": [(os.environ.get('REDIS_URL', 'redis://localhost:6479'), )],
-            "hosts": [config('REDIS_URL')]
         },
     },
 }
