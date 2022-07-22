@@ -82,9 +82,10 @@ CHANNEL_LAYERS = {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
             # "hosts": [(os.environ.get('REDIS_URL'), os.environ.get('REDIS_PORT'))],
-            "hosts": [(os.environ.get('REDIS_URL'), '')],
+            "hosts": [os.environ.get('REDIS_URL')]
             # "hosts": [(os.environ.get('REDIS_URL', 'redis://localhost:6379'), )],
         },
+        "ROUTING": "speaking_club.routing.channel_routing",
     },
 }
 
