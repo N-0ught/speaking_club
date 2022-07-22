@@ -30,6 +30,7 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', cast=bool)
 
 ALLOWED_HOSTS = ['gospeakclub.herokuapp.com/', '127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['https://gospeakclub.herokuapp.com/']
 
 
 # Application definition
