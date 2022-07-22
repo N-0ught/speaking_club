@@ -10,7 +10,7 @@ https://docs.djangoproject.com/en/4.0/howto/deployment/asgi/
 import os
 
 import django
-# django.setup()
+django.setup()
 
 from channels.auth import AuthMiddlewareStack
 from channels.security.websocket import AllowedHostsOriginValidator
