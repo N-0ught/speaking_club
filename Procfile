@@ -1,1 +1,1 @@
-web: daphne -b 0.0.0.0 -p 8001 speaking_club.asgi:application
+web: daphne -b 0.0.0.0 -p $PORT speaking_club.asgi:application
