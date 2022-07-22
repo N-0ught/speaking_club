@@ -36,13 +36,13 @@ ALLOWED_HOSTS = ['gospeakclub.herokuapp.com/', '127.0.0.1']
 
 INSTALLED_APPS = [
     'club.apps.ClubConfig',
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'channels',
 ]
 
 MIDDLEWARE = [
