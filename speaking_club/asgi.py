@@ -17,7 +17,7 @@ from django.core.asgi import get_asgi_application
 import club.routing
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'speaking_club.settings')
-django.setup()
+# django.setup()
 django_asgi_app = get_asgi_application()
 
 application = ProtocolTypeRouter({
