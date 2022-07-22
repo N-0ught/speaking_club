@@ -15,7 +15,7 @@ from channels.routing import ProtocolTypeRouter, URLRouter
 from django.core.asgi import get_asgi_application
 import club.routing
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dj_chat.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'speaking_club.settings')
 django_asgi_app = get_asgi_application()
 
 application = ProtocolTypeRouter({
