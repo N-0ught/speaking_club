@@ -10,8 +10,6 @@ https://docs.djangoproject.com/en/4.0/howto/deployment/asgi/
 import os
 
 import django
-
-
 from channels.auth import AuthMiddlewareStack
 from channels.security.websocket import AllowedHostsOriginValidator
 from channels.routing import ProtocolTypeRouter, URLRouter
@@ -19,11 +17,10 @@ from django.core.asgi import get_asgi_application
 import club.routing
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'speaking_club.settings')
-django.setup()
-django_asgi_app = get_asgi_application()
+# django.setup()
 
 application = ProtocolTypeRouter({
-    "http": django_asgi_app,
+    "http": get_asgi_application(),
     "websocket": AllowedHostsOriginValidator(
         AuthMiddlewareStack(
             URLRouter(
