@@ -113,3 +113,13 @@ class HomeworkSubmitModel(models.Model):
 class HomeworkFilesModel(models.Model):
     homework = models.ForeignKey(HomeworkSubmitModel, on_delete=models.CASCADE)
     file = models.FileField(upload_to=user_directory_path, blank=True)
+
+
+class ChatMessages(models.Model):
+    page = models.CharField(max_length=255)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    message = models.TextField()
+    create_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['create_date']

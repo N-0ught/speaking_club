@@ -19,7 +19,7 @@
 <header class="masthead bg-primary text-white text-center" style="background: #9BA3EB">
     <div class="container d-flex align-items-center flex-column">
         <h1>Your course</h1>
-        <h5>Total score: {{score}} / 200<br>Days completed: {{days_completed}} / 60</h5>
+        <h5>Total score: {{score}} / 200<br>Days completed: {{days_completed}} / 60 <br><a class="getstarted-btn" type="button" href="{% url 'club:course_chat' %}">Course chat</a></h5>
         <ul class="course-list col-10 col-md-8">
             {% with ''|center:7 as range %}
             {% for n in range %}

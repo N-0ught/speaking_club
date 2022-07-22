@@ -1,0 +1,85 @@
+{% extends 'club/header.html' %}
+{% load static %}
+{% block navbar %}
+<li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="{% url 'club:index' %}">Homepage</a></li>
+{% if user.is_authenticated %}
+<li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="{% url 'club:profile' %}" style="font-weight:900">{{ user.username }}</a></li>
+<li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="{% url 'club:course' %}" style="font-weight:900">Course</a></li>
+<li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="{% url 'club:logout' %}">Logout</a></li>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<header class="masthead bg-primary text-white text-center" style="background: #34495e">
+    <div class="container d-flex align-items-center flex-column">
+        <h1>Chat</h1>
+        <div class="course-chat col-10" id="chat-log">
+            {% for message in messages %}
+            <div class="course-chat-message">
+                <p>{{ message.user }}<br>{{ message.message }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="d-flex bg-white my-4 col-10" style="border-radius:10px">
+            <textarea class="p-3 m-2 col-8" style='border: 2px solid #9BA3EB; border-radius: 10px' id="chat-message-input" placeholder="Your message..."></textarea>
+            <input class="edit_button" id="chat-message-submit" type="button" value="Send">
+        </div>
+    </div>
+</header>
+{% endblock %}
+{% block scripts %}
+{{ user.username|json_script:"json-username" }}
+<script>
+        const userName = JSON.parse(document.getElementById('json-username').textContent);
+
+        const chatSocket = new WebSocket(
+            'wss://'
+            + window.location.host
+            + '/ws/course/chat/'
+        );
+
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+
+            if (data.message) {
+                let html = '<div class="course-chat-message">';
+                    html += '<p>' + data.username + '<br>' + data.message + '</p></div>';
+                document.querySelector('#chat-log').innerHTML += html;
+
+                scrollToBottom();
+            } else {
+                alert('Message is empty');
+            }
+        }
+
+        chatSocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        document.querySelector('#chat-message-input').focus();
+        document.querySelector('#chat-message-input').onkeyup = function(e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#chat-message-submit').click();
+            }
+        };
+
+        document.querySelector('#chat-message-submit').onclick = function(e) {
+            const messageInputDom = document.querySelector('#chat-message-input');
+            const message = messageInputDom.value;
+            chatSocket.send(JSON.stringify({
+                'message': message,
+                'username': userName
+            }));
+            messageInputDom.value = '';
+
+        };
+
+
+        function scrollToBottom() {
+            const objDiv = document.querySelector('#chat-log');
+            objDiv.scrollTop = objDiv.scrollHeight;
+        }
+
+        scrollToBottom();
+    </script>
+{% endblock %}

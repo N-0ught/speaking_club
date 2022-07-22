@@ -1,1 +1,1 @@
-web: gunicorn speaking_club.wsgi
+web: daphne -b 0.0.0.0 -p $PORT speaking_club.asgi:application

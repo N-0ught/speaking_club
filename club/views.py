@@ -10,7 +10,7 @@ from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from .forms import Registration, LoginForm, EditForm, ResetPassword, ContactUs, CommentForm, AccessForm, HomeworkSubmitForm, HomeworkFilesForm
-from .models import ProfileModel, CommentsModel, HomeworkSubmitModel, HomeworkFilesModel
+from .models import ProfileModel, CommentsModel, HomeworkSubmitModel, HomeworkFilesModel, ChatMessages
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
@@ -214,3 +214,10 @@ def course_day(request, day):
     submit_form = HomeworkSubmitForm()
     files_form = HomeworkFilesForm()
     return render(request, f'club/course_days/day{day}.html', {'submit_form': submit_form, 'files_form': files_form})
+
+
+@login_required
+def course_chat(request):
+    page = 'general'
+    chat_messages = ChatMessages.objects.filter(page=page)[0:25]
+    return render(request, 'club/course_chat.html', {'messages': chat_messages})

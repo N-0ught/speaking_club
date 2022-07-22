@@ -125,6 +125,34 @@ body {
     border: 0px solid #ffffff;
   }
 
+.course-chat {
+  height: 350px;
+  background: #ecf0f1;
+  border-radius: 10px;
+  color: black;
+  text-align: left;
+  overflow-y: auto;
+}
+
+@media (min-height: 750px) {
+    .course-chat {
+    height: 450px;
+    }
+}
+
+@media (min-height: 900px) {
+    .course-chat {
+    height: 600px;
+    }
+}
+
+.course-chat .course-chat-message {
+  background: white;
+  margin: 20px;
+  padding: 15px;
+  border-radius: 12px;
+}
+
 .course-list {
   background: #ecf0f1;
   padding: 10px 0;
