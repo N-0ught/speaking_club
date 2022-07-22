@@ -85,7 +85,6 @@ CHANNEL_LAYERS = {
             "hosts": [os.environ.get('REDIS_URL')]
             # "hosts": [(os.environ.get('REDIS_URL', 'redis://localhost:6379'), )],
         },
-        "ROUTING": "speaking_club.routing.channel_routing",
     },
 }
 
