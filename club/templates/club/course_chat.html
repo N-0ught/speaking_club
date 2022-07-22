@@ -33,7 +33,7 @@
         const userName = JSON.parse(document.getElementById('json-username').textContent);
 
         const chatSocket = new WebSocket(
-            'wss://'
+            'ws://'
             + window.location.host
             + '/ws/course/chat/'
         );
