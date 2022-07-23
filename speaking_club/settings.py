@@ -75,6 +75,7 @@ TEMPLATES = [
     },
 ]
 
+BROKER_URL = os.environ.get("REDIS_URL")
 WSGI_APPLICATION = 'speaking_club.wsgi.application'
 ASGI_APPLICATION = 'speaking_club.asgi.application'
 CHANNEL_LAYERS = {
@@ -82,14 +83,13 @@ CHANNEL_LAYERS = {
         # "BACKEND": "channels.layers.InMemoryChannelLayer",
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-                "hosts": [(os.environ.get('REDIS_URI'), )]
+                "hosts": [BROKER_URL]
             # "hosts": [(os.environ.get('REDIS_HOST'), os.environ.get('REDIS_PORT'))],
             # "hosts": [(os.environ.get('REDIS_URL', 'redis://localhost:6479'), )],
         },
     },
 }
-print(os.environ.get('REDIS_URL'))
-print(os.environ.get('REDIS_URI'))
+
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
