@@ -82,13 +82,14 @@ CHANNEL_LAYERS = {
         # "BACKEND": "channels.layers.InMemoryChannelLayer",
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-                "hosts": [(os.environ.get('REDIS_URI'))]
+                "hosts": [(os.environ.get('REDIS_URI'), )]
             # "hosts": [(os.environ.get('REDIS_HOST'), os.environ.get('REDIS_PORT'))],
             # "hosts": [(os.environ.get('REDIS_URL', 'redis://localhost:6479'), )],
         },
     },
 }
-
+print(os.environ.get('REDIS_URL'))
+print(os.environ.get('REDIS_URI'))
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
