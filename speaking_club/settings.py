@@ -81,8 +81,8 @@ ASGI_APPLICATION = 'speaking_club.asgi.application'
 CHANNEL_LAYERS = {
     'default': {
         # "BACKEND": "channels.layers.InMemoryChannelLayer",
-        # 'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'BACKEND': "channels_redis.pubsub.RedisPubSubChannelLayer",
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        # 'BACKEND': "channels_redis.pubsub.RedisPubSubChannelLayer",
         'CONFIG': {
                 "hosts": [os.environ.get("REDIS_URL")]
             # "hosts": [(os.environ.get('REDIS_HOST'), os.environ.get('REDIS_PORT'))],
