@@ -21,7 +21,7 @@ from channels.security.websocket import AllowedHostsOriginValidator
 import club.routing
 
 application = ProtocolTypeRouter({
-    "http": django_asgi_app,
+    "https": django_asgi_app,
     "websocket": AllowedHostsOriginValidator(
         AuthMiddlewareStack(
             URLRouter(
